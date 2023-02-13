@@ -19,6 +19,9 @@
     <body>
         <h1 style="color:black; text-align: center" >Welcome to My Homepage</h1>
 
+        <h2 style="color:black; text-align: center" ><a href="{{ route('home.signup') }}"> Signup with route name</a></h2>
+ <h2 style="color:black; text-align: center" ><a href="{{ url('home/signup') }}"> Signup with route url </a></h2>
+
       </body>
 
 

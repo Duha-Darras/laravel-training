@@ -279,3 +279,13 @@ Modify the account body
        &lt;/h1>
     &lt;/body>
 </pre>
+
+
+## Part 6: Database and Migrations 
+A database is a structured collection of data stored and organized in a specific manner, allowing for efficient retrieval, modification, and management of the information it contains. The data in a database can be organized in many ways, such as tables, columns, and rows, and can be searched, sorted, and retrieved based on specific criteria.
+
+### Data structures VS. Database 
+|              | Data structures      |  Database          |
+|--------------|----------------------|--------------------|
+|types         | arrays, linked lists, trees, and graphs | Relational databases(MySQL, Oracle, and Microsoft SQL Server), NoSQL databases (MongoDB, Couchbase)|
+|usage | organizing and storing data in a computer memory so that it can be efficiently accessed and manipulated | organizing and storing data in a computer storage so that it can be efficiently accessed and manipulated,  data indexing, query processing, and transaction management |
