@@ -252,12 +252,15 @@ In signup blade change the action to this post route
 </pre>
 Now try to submit the form: you will receive the following error **419 PAGE EXPIRED**
 
-Why???
-To solve add @csrf inside the form 
+Why??? To protect from CSRF attack
+To solve add @csrf inside the form, this adds a CSRF token to the form returned to the user and it is also stored in the server. When a user submit the form the token is submitted also and compared with the stored one in the server if both tokens are the same the form will be processed, otherwise the form will be aborted. This token is used to make sure that the one who is submitting the form is the same user who asked for the form. 
 <pre>
  &lt;form action="{{ route('home.create') }}" method="post">
             @csrf
 </pre>
+
+This is a sample of how a 32 bit token looks like:
+**e5c7d13d8f2cffa3097f48d3db7f3d3c9a7b84faec49fbf96e1f2e78f15d13cd**
 
 We need to make sure that the data was entered correctly so we need to access the request data 
 <pre>
@@ -281,7 +284,7 @@ Modify the account body
 </pre>
 
 
-## Part 6: Database and Migrations 
+## Part 6: Database  
 A database is a structured collection of data stored and organized in a specific manner, allowing for efficient retrieval, modification, and management of the information it contains. The data in a database can be organized in many ways, such as tables, columns, and rows, and can be searched, sorted, and retrieved based on specific criteria.
 
 ### Data structures VS. Database 
@@ -289,3 +292,131 @@ A database is a structured collection of data stored and organized in a specific
 |--------------|----------------------|--------------------|
 |types         | arrays, linked lists, trees, and graphs | Relational databases(MySQL, Oracle, and Microsoft SQL Server), NoSQL databases (MongoDB, Couchbase)|
 |usage | organizing and storing data in a computer memory so that it can be efficiently accessed and manipulated | organizing and storing data in a computer storage so that it can be efficiently accessed and manipulated,  data indexing, query processing, and transaction management |
+|
+storage | computer memory (RAM) and may be temporarily stored on a hard disk or solid-state drive if the computer's memory is not sufficient to store the data structure | on the computer hard drive (HDD, SSD) or on cloud|
+
+
+### Database Functionality 
+A database provides several functionalities, including:
+
+- Data storage: A database is used to store large amounts of structured data, such as text, numbers, and dates. This data can be organized into tables, with each table consisting of a set of rows and columns.
+
+- Data retrieval: A database provides a way to quickly retrieve data from the tables. This can be done using a query language, such as SQL, that allows you to specify the data you want to retrieve and how it should be sorted and filtered.
+
+- Data manipulation: A database allows you to add, update, and delete data in the tables. This is done using SQL commands or other methods provided by the database management system.
+
+- Data consistency: A database provides mechanisms to ensure the consistency of the data, such as constraints, triggers, and transactions. This helps to ensure that the data in the database is accurate and consistent, even in the presence of multiple users accessing the data at the same time.
+
+- Data security: A database provides mechanisms to control access to the data, such as authentication and authorization. This allows you to control who can access the data and what they can do with it, helping to protect sensitive data from unauthorized access.
+
+- Data backup and recovery: A database provides mechanisms to backup the data and recover from data loss, such as backups and replication. This helps to ensure that the data is protected in the event of a hardware failure, software error, or other disaster.
+
+### Database Basic Component 
+- Tables: Tables are the basic building blocks of a database and are used to store the data. Each table consists of a set of rows and columns, with each row representing a single record and each column representing a specific field within the record.
+
+- Fields: Fields are the individual elements within each record that store specific pieces of data, such as a customer's name, address, or phone number.
+
+- Records: Records are the individual units of data within a table, with each record consisting of one or more fields.
+
+- Keys: Keys are used to identify and link the records within a table and between tables. There are several types of keys, including primary keys, foreign keys, and unique keys.
+
+- Queries: Queries are used to retrieve specific data from the database based on a set of conditions. Queries are written in a query language, such as SQL, and allow you to specify the data you want to retrieve, how it should be sorted and filtered, and how it should be displayed.
+
+- Indexes: Indexes are used to speed up the process of retrieving data from the database by creating a separate structure that maps the data in the table to its location on disk. This allows the database management system to quickly locate the data it needs to retrieve the results of a query. 
+
+### SQL (Structured Query Language)
+
+Structured Query Language (SQL) is a standard programming language used for managing and manipulating relational databases. It is used to perform various operations such as creating, updating, and retrieving data stored in databases.
+
+Here are some basic SQL commands:
+- SELECT: used to retrieve data from one or more tables in a database. For example, **SELECT * FROM users** retrieves all columns and all rows from the users table.
+
+- INSERT: used to insert data into a table. For example, **INSERT INTO users (first_name, last_name, email) VALUES ('John', 'Doe', 'johndoe@example.com')** inserts a new row into the users table with the specified values for first_name, last_name, and email.
+
+- UPDATE: used to modify existing data in a table. For example, **UPDATE users SET email='johndoe2@example.com' WHERE id=1** updates the email address of the user with id equal to 1 in the users table.
+
+- DELETE: used to delete data from a table. For example, **DELETE FROM users WHERE id=1** deletes the row with id equal to 1 from the users table.
+
+- CREATE: used to create a new table, database, or other database object. For example, **CREATE TABLE users (id INT PRIMARY KEY, first_name VARCHAR(50), last_name VARCHAR(50), email VARCHAR(100))** creates a new table named users with the specified columns and data types.
+
+- DROP: used to delete a database object, such as a table or database. For example, **DROP TABLE users** deletes the users table from the database.
+
+## Part 7: Laravel Migrations
+Laravel migrations are a feature in the Laravel web application framework that allow developers to define and manage changes to the database schema in an organized and versioned manner. With migrations, you can easily manage changes to the database schema over time, including creating new tables, modifying existing tables, and even rolling back changes.
+
+Migrations are used to:
+- Create and modify database tables: You can create new tables or modify existing tables using migrations, which makes it easy to keep track of changes to the schema over time.
+
+- Version control for database schema: Migrations allow you to version control your database schema, just like you would with your code. You can easily roll back to a previous version of the schema if needed.
+
+- Facilitate collaboration: Migrations make it easier for multiple developers to work on the same project without having to manually manage database changes.
+
+- Automate database setup: Migrations can be used to automate the setup of a new database, making it easy to set up a fresh database with the correct schema in a matter of minutes.
+
+To create a migration use the following 
+command 
+<pre> 
+php artisan make:migration create_blogs_table
+</pre>
+
+### Migration Structure
+A migration class contains two methods: **up and down**. The up method is used to add new tables, columns, or indexes to your database, while the down method should reverse the operations performed by the up method.
+
+
+To run a migration use the following command, this command run the up function 
+<pre> 
+php artisan migrate
+</pre>
+
+
+To rollback the migration use this command, this command run the down function.
+This command rolls back the last "batch" of migrations, which may include multiple migration files.
+
+<pre>
+php artisan migrate:rollback 
+
+or use  the following to rollback a specific number of migrations
+
+php artisan migrate:rollback --step=2
+</pre>
+
+The structure of creating column in migration
+
+<pre>
+$table->columnType('column_name', 'column_parameters','anotherParameters')->columnModifier();
+
+
+**examples of columns with different types:
+ $table->id();
+ $table->foreignId('user_id');
+ $table->integer('votes');
+ $table->boolean('confirmed');
+ $table->bigInteger('votes');
+ $table->dateTime('created_at', $precision = 0);
+ $table->date('created_at');
+ $table->decimal('amount', $precision = 8, $scale = 2);
+ $table->double('amount', 8, 2);
+ $table->string('name', 100);
+ $table->text('description');
+ $table->longText('description');
+
+ **examples of some modifiers:
+->after('column')
+->default($value)
+->comment('my comment')
+
+**the following represents constraints
+->unsigned()
+->unique()
+->nullable($value = true)
+
+</pre>
+
+
+## Part 8: Laravel Models
+
+
+
+
+
+
