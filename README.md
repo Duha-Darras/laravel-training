@@ -292,8 +292,7 @@ A database is a structured collection of data stored and organized in a specific
 |--------------|----------------------|--------------------|
 |types         | arrays, linked lists, trees, and graphs | Relational databases(MySQL, Oracle, and Microsoft SQL Server), NoSQL databases (MongoDB, Couchbase)|
 |usage | organizing and storing data in a computer memory so that it can be efficiently accessed and manipulated | organizing and storing data in a computer storage so that it can be efficiently accessed and manipulated,  data indexing, query processing, and transaction management |
-|
-storage | computer memory (RAM) and may be temporarily stored on a hard disk or solid-state drive if the computer's memory is not sufficient to store the data structure | on the computer hard drive (HDD, SSD) or on cloud|
+|storage | computer memory (RAM) and may be temporarily stored on a hard disk or solid-state drive if the computer's memory is not sufficient to store the data structure | on the computer hard drive (HDD, SSD) or on cloud|
 
 
 ### Database Functionality 
