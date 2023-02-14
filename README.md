@@ -413,6 +413,15 @@ $table->columnType('column_name', 'column_parameters','anotherParameters')->colu
 
 
 ## Part 8: Laravel Models
+Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoyable to interact with your database. When using Eloquent, each database table has a corresponding "Model" that is used to interact with that table. In addition to retrieving records from the database table, Eloquent models allow you to insert, update, and delete records from the table as well.
+
+use this command to create a model
+<pre>
+php artisan make:model Blog
+
+or use this command to create a controller for the model 
+php artisan make:model Flight --controller --resource
+</pre>
 
 
 
