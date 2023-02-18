@@ -414,17 +414,170 @@ $table->columnType('column_name', 'column_parameters','anotherParameters')->colu
 
 ## Part 8: Laravel Models
 Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoyable to interact with your database. When using Eloquent, each database table has a corresponding "Model" that is used to interact with that table. In addition to retrieving records from the database table, Eloquent models allow you to insert, update, and delete records from the table as well.
+Almost each table table will have one or more coressponding models, however, some table such as pivot tables won't need any model.
 
 use this command to create a model
 <pre>
-php artisan make:model Blog
+php artisan make:model User
+</pre>
 
-or use this command to create a controller for the model 
-php artisan make:model Flight --controller --resource
+The main components of the model are:
+
+- Attributes: Attributes are the properties of the model that correspond to database columns. They define the structure of the model and determine how data is stored in the database.
+
+- Table name: The table name property specifies the name of the database table that the model represents. By default, Laravel uses the plural form of the model's name as the table name, but you can customize it by specifying a different name.
+
+- Primary key: The primary key property specifies the name of the column that serves as the primary key of the model's database table. By default, Laravel uses the id column as the primary key, but you can specify a different column name if needed.
+
+- Relationships: Relationships define how the model is related to other models in the application's data layer. Laravel supports several types of relationships, including one-to-one, one-to-many, and many-to-many relationships.
+
+- Query methods: Query methods allow you to retrieve data from the database using the model. Laravel provides a wide range of query methods, including methods to select, filter, and sort data.
+
+- Validation rules: Validation rules allow you to define how data should be validated before it is saved to the database. Laravel provides a wide range of validation rules, including rules for validating data types, length, and uniqueness.
+
+- Accessors and mutators: Accessors and mutators allow you to manipulate the values of the model's attributes before they are saved to or retrieved from the database. Accessors are used to retrieve attribute values, while mutators are used to set attribute values.
+
+- Scopes: Scopes allow you to define reusable query constraints that can be applied to a model's queries. Scopes can help you avoid duplicating query logic throughout your application.
+
+**Sample model
+
+<pre>
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+
+    protected $table = 'users';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = true;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'username',
+        'address',
+        'phone'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+}
+</pre>
+
+To create controller for the model with basic functions (resource functions ) run this command 
+<pre>
+use this command to create a controller for the model 
+php artisan make:model User --controller --resource
+</pre>
+
+The results controller will be like 
+<pre>
+class UserController extends Controller
+{
+    public function index()
+    {
+        // Show a list of users
+    }
+
+    public function create()
+    {
+        // Show a form to create a new user
+    }
+
+    public function store(Request $request)
+    {
+        // Store the new user in the database
+    }
+
+    public function show($id)
+    {
+        // Show a single user
+    }
+
+    public function edit($id)
+    {
+        // Show a form to edit an existing user
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Update the user in the database
+    }
+
+    public function destroy($id)
+    {
+        // Delete the user from the database
+    }
+}
+</pre>
+
+## Part 9: Customizing Error Views
+In Laravel, you can override the default error views by creating your own error views and placing them in the **resources/views/errors** directory. Laravel uses HTTP status codes to determine which error view to display, so you can create a separate view for each status code that you want to customize.
+
+Here's how to override the default error views in Laravel:
+- Create a new directory named errors in the resources/views directory if it doesn't exist.
+- Create a new Blade template for the error you want to override. The name of the file should be the HTTP status code you want to override, followed by .blade.php. For example, if you want to override the 404 error page, create a file named 404.blade.php.
+- Customize the contents of the Blade template as desired. You can use Laravel's Blade syntax to display dynamic content or add styling.
+- Clear the cache by running the following command in your terminal: **php artisan view:clear**
+- Test your custom error view by triggering the corresponding error. For example, if you created a custom view for the 404 error, try to access a non-existent page on your application to see if the custom view is displayed.
+
+That's it! Laravel will now use your custom error views instead of the default ones.
+
+Sample HTML for 404 error page 
+<pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Not Found - 404 Error</title>
+    <style>
+      /* Your custom CSS styles */
+    </style>
+  </head>
+  <body>
+    <h1>Page Not Found - 404 Error</h1>
+    <p>The page you requested could not be found on this server.</p>
+    <p>Please check the URL for typos and try again.</p>
+    <p>If you believe this is an error, please contact the site administrator.</p>
+  </body>
+</html>
 </pre>
 
 
+## Part 10: Creating CRUD for User model
 
+To create CRUD (Create, Read, Update, Delete) actions for a resource, we require the controller to have the following functions index, create, store, show, edit, update,destroy 
 
+Then we need to add the following routes to the routes/web.php file to create what is called RESTful routes. REST (Representational State Transfer) is an architectural style for building web services, and RESTful routing is a way to implement this style in your application. In RESTful routing, each URL represents a specific resource, and you use HTTP verbs (GET, POST, PUT, DELETE, etc.) to perform CRUD (Create, Read, Update, Delete) operations on that resource. 
 
-
+|HTTP Verb |	URI	| function	|Route Name |
+|----------|--------|-----------|-----------|
+|GET	|/resource	|index	|resource.index |
+|GET	|/resource/create	|create	|resource.create |
+|POST	|/resource	|store	|resource.store |
+|GET	|/resource/{id}	|show	|resource.show |
+|GET	|/resource/{id}/edit	|edit	| resource.edit |
+|PUT/PATCH |	/resource/{id}	|update |	resource.update |
+|DELETE	|/resource/{id}	|destroy |	resource.destroy |
