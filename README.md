@@ -548,21 +548,21 @@ That's it! Laravel will now use your custom error views instead of the default o
 
 Sample HTML for 404 error page 
 <pre>
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Page Not Found - 404 Error</title>
-    <style>
+&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;title>Page Not Found - 404 Error&lt;/title>
+    &lt;style>
       /* Your custom CSS styles */
-    </style>
-  </head>
-  <body>
-    <h1>Page Not Found - 404 Error</h1>
-    <p>The page you requested could not be found on this server.</p>
-    <p>Please check the URL for typos and try again.</p>
-    <p>If you believe this is an error, please contact the site administrator.</p>
-  </body>
-</html>
+    &lt;/style>
+  &lt;/head>
+  &lt;body>
+    &lt;h1>Page Not Found - 404 Error&lt;/h1>
+    &lt;p>The page you requested could not be found on this server.&lt;/p>
+    &lt;p>Please check the URL for typos and try again.&lt;/p>
+    &lt;p>If you believe this is an error, please contact the site administrator.&lt;/p>
+  &lt;/body>
+&lt;/html>
 </pre>
 
 
