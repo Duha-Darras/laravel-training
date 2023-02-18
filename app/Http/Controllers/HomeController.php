@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -9,29 +10,28 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('home');
+       return view('home');
     }
 
     public function signup()
     {
         return view('signup');
     }
-    public function account()
-    {
-        return view('account');
-    }
 
-    public function hello($name, $lastname=" ")
-    {
-        return "Hello " . $name . " " . $lastname;
-    }
+    public function signupStore(Request $request){
 
-    public function create(Request $request){
+        $user = new User;
+        $user->name = $request->name;
+        $user->username = $request->name;
+        $user->password = $request->password;
+        $user->email = $request->email;
+        $user->save();
 
-        $username = $request->username5;
-        $email =  $request->email;
-        $pass = $request->password;
-        return "Account created with username " . $username . " and email " . $email . " and password " . $pass ;
+        return redirect()->route('user.index');
+
+
+
 
     }
+
 }
