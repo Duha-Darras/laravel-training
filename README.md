@@ -660,8 +660,9 @@ class UserController extends Controller
 
     public function store(Request $request)
     { 
-     // note that the attribute name in $request->attribute is 
+       // note that the attribute name in $request->attribute is 
        //the same value givent to the input tag name attribute field
+
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
@@ -713,4 +714,39 @@ class UserController extends Controller
 
 The followign are simple  views:
 
+create users folder under the views folder andd add the following views to it
+
+**index.blade.php**
+```
+<h1>Users</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($users as $user)
+            <tr>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+                <td>
+                    <a href="{{ route('users.show', ['user' => $user->id]) }}">View</a>
+                    <a href="{{ route('users.edit', ['user' => $user->id]) }}">Edit</a>
+                    <form method="POST" action="{{ route('users.destroy', ['user' => $user->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+<a href="{{ route('users.create') }}">Create User</a>
+```
 
