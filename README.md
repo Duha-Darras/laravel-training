@@ -749,3 +749,68 @@ create users folder under the views folder andd add the following views to it
 <a href="{{ route('users.create') }}">Create User</a>
 ```
 
+**create.blade.php**
+```
+<h1>Create User</h1>
+
+<form method="POST" action="{{ route('users.store') }}">
+    @csrf
+
+    <label for="name">Name:</label>
+    <input type="text" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Create</button>
+</form>
+
+<a href="{{ route('users.index') }}">Back to Users</a>
+
+
+```
+
+**show.blade.php**
+```
+
+<h1>{{ $user->name }}</h1>
+
+<p>Email: {{ $user->email }}</p>
+
+<a href="{{ route('users.edit', ['user' => $user->id]) }}">Edit</a>
+
+<form method="POST" action="{{ route('users.destroy', ['user' => $user->id]) }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit">Delete</button>
+</form>
+
+<a href="{{ route('users.index') }}">Back to Users</a>
+```
+**edit.blade.php**
+```
+<h1>Edit User</h1>
+
+<form method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
+    @csrf
+    @method('PUT')
+
+    <label for="name">Name:</label>
+    <input type="text" name="name" value="{{ $user->name }}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" value="{{ $user->email }}" required>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password">
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<a href="{{ route('users.show', ['user' => $user->id]) }}">Cancel</a>
+
+```
+
