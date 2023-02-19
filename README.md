@@ -581,3 +581,41 @@ Then we need to add the following routes to the routes/web.php file to create wh
 |GET	|/resource/{id}/edit	|edit	| resource.edit |
 |PUT/PATCH |	/resource/{id}	|update |	resource.update |
 |DELETE	|/resource/{id}	|destroy |	resource.destroy |
+
+**Note that resource word should be replaced with the plural resource name: users, blogs, posts
+
+|HTTP Verb |	URI	| function	|Route Name |
+|----------|--------|-----------|-----------|
+|GET	|/users	|index	|users.index |
+|GET	|/users/create	|create	|users.create |
+|POST	|/users	|store	|users.store |
+|GET	|/users/{id}	|show	|users.show |
+|GET	|/users/{id}/edit	|edit	| users.edit |
+|PUT/PATCH |	/users/{id}	|update |	users.update |
+|DELETE	|/users/{id}	|destroy |	users.destroy |
+
+
+The syntax  of these routes is :
+<pre>
+// Show all users
+Route::get('/users', 'UserController@index')->name('users.index');
+
+// Show the form for creating a new user
+Route::get('/users/create', 'UserController@create')->name('users.create');
+
+// Store a new user
+Route::post('/users', 'UserController@store')->name('users.store');
+
+// Show a specific user
+Route::get('/users/{user}', 'UserController@show')->name('users.show');
+
+// Show the form for editing a specific user
+Route::get('/users/{user}/edit', 'UserController@edit')->name('users.edit');
+
+// Update a specific user
+Route::put('/users/{user}', 'UserController@update')->name('users.update');
+
+// Delete a specific user
+Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
+
+</pre>
