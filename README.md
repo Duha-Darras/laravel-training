@@ -70,11 +70,11 @@ Model-view-controller (MVC) is a software architectural pattern commonly used to
 In Laravel, the Route class is used to define the routes for a web application. It provides a simple and convenient way to define URLs, HTTP methods, and controllers or closure functions that should handle the incoming requests.
 If you open the **routes/web.php** file you will find the following code:
 
-<pre>
+```
 Route::get('/', function () {
     return view('welcome');
 });
-</pre>
+```
 
 This example creates a route that matches the root URL of the application and returns a view named "welcome". The get method is used to specify that the route should only match GET requests.
 Laravel also provides several other methods on the Route class, such as post, put, patch, delete, options, and any, that you can use to define routes that match different HTTP methods
@@ -89,21 +89,21 @@ Route::any();
 </pre>
 
 Try:
-<pre>
+```
 Route::get('/welcome', function () {
 return 'welcome';
 });
 
 Route::get('/hello', function () {
-echo '&lt;h1>Hello&lt;/h1>';
+echo '<h1>Hello</h1>';
 });
 
-</pre>
+```
 
 **Routes parameters**
 In Laravel, you can pass parameters to your routes to capture dynamic values in the URL. This allows you to create dynamic and flexible URLs that can be used to retrieve specific data based on the parameters provided.
 
-<pre>
+```
 Route::get( 'hello/{name}', function ($name){
 echo "Hello " . $name;
 });
@@ -116,14 +116,14 @@ Route::get( 'hello/{name}/{fname?}', function ($x, $y="test"){
             echo "Hello " . $x . " " . $y;
             });
 
-</pre>
+```
 
 **Note**: the ? means optional parameter
 
 **Grouping routes**
 Grouping routes in Laravel allows you to organize and structure your routes in a more meaningful and efficient way. By grouping routes, you can apply common behavior or configurations to multiple routes at once, which can help reduce code duplication and improve the maintainability of your application.
 
-<pre> 
+```
 Route::group(['prefix'=>'home'], function()
 {
 Route::get('/', function () {
@@ -137,7 +137,7 @@ Route::get('/signup',function () {
 });
 });
 
-</pre>
+```
 
 **Named routes**
 Naming routes in Laravel is useful for several reasons:
@@ -146,7 +146,7 @@ Naming routes in Laravel is useful for several reasons:
 - Ease of maintenance: Named routes make it easier to update your application if you need to change the URL structure. Instead of searching through your code for hardcoded URLs, you can update the route definition in one place, and the change will be reflected throughout your application.
 - URL generation: Named routes allow you to generate URLs programmatically, without having to hardcode them in your application. For example, you can generate a URL to a named route in your Blade templates or in your controllers using the route helper function. This can make your application more flexible and resilient to changes.
 
-<pre>
+```
 Route::group(['prefix' => 'home'], function () {
     Route::get('/', function () {
         return view('home');
@@ -159,26 +159,26 @@ Route::group(['prefix' => 'home'], function () {
     })->name('home.signup');
 });
 
-</pre>
+```
 In home.blade add the following
 
-<pre>
- &lt;h2 style="color:black; text-align: center" >&lt;a href="{{ route('home.signup') }}"> Signup with route name&lt;/a>&lt;/h2>
- &lt;h2 style="color:black; text-align: center" >&lt;a href="{{ url('home/signup') }}"> Signup with route url &lt;/a>&lt;/h2>
-</pre>
+```
+ <h2 style="color:black; text-align: center" ><a href="{{ route('home.signup') }}"> Signup with route name</a></h2>
+ <h2 style="color:black; text-align: center" ><a href="{{ url('home/signup') }}"> Signup with route url </a></h2>
+```
 
 
 Then in routes/web.php change the signup route URI to sign-up and check which one of these links is still working
 
 Note: The route method takes the name of the route, while the url method take the URI of the route
-Note: The **{{ }}** syntax in Laravel Blade is used to print a value or expression in a Blade template. **{{ $name}}** is equal to **<?php echo $name ?>**
+Note: The **{{ }}** syntax in Laravel Blade is used to print a value or expression in a Blade template. **{{ $name}}** is equal to **```<?php echo $name ?>```**
  
 ## Part 5: Laravel Controllers
 Controllers are classes that help manage HTTP requests and provide responses to these requests. Controllers in Laravel are used to manage the flow of data between the model (which handles database logic) and the view (which displays the user interface). When a user makes an HTTP request, Laravel maps the request to a specific controller method and the method is executed to handle the request and return a response.
 To create controller use command: **php artisan make:controller HomeController**
 The controller naming convention is pascal case where the word Controller is added at the end of the name
-<pre>
-&lt;?php
+```
+<?php
 
 namespace App\Http\Controllers;
 
@@ -189,11 +189,11 @@ class HomeController extends Controller
     //
 }
 
-</pre>
+```
 Note that any created controller should extends the Controller class 
 
 Add methods to return views:
-<pre>
+```
  public function index()
     {
         return view('home');
@@ -213,14 +213,14 @@ Add methods to return views:
         return "Hello " . $name . " " . $lastname;
     }
 
-</pre>
+```
 Now we should use these methods in the web.php
 At the top of the file add:
 <pre>
 use App\Http\Controllers\HomeController;
 </pre>
 in routes replace the anonymous functions with controller methods 
-<pre>
+```
 [HomeController::class,'methodName']
 
 Route::get('hello/{name}/{fname?}', [HomeController::class,'hello']);
@@ -231,39 +231,39 @@ Route::group(['prefix' => 'home'], function () {
     Route::get('/sign-up', [HomeController::class,'signup'])->name('home.signup');
 });
 
-</pre>
+```
 
 Let’s add a  route and method to handle the form data 
-<pre>
+```
 public function create(Request $request)
     {
         return redirect(route('home.account'));
     }
 
-</pre>
+```
 Add the following route inside the home group 
-<pre>
+```
 Route::post('/sign-up', [HomeController::class,'create'])->name('home.create');
-</pre>
+```
 
 In signup blade change the action to this post route 
-<pre>
-        &lt;form action="{{ route('home.create') }}" method="post">
-</pre>
+```
+        <form action="{{ route('home.create') }}" method="post">
+```
 Now try to submit the form: you will receive the following error **419 PAGE EXPIRED**
 
 Why??? To protect from CSRF attack
 To solve add @csrf inside the form, this adds a CSRF token to the form returned to the user and it is also stored in the server. When a user submit the form the token is submitted also and compared with the stored one in the server if both tokens are the same the form will be processed, otherwise the form will be aborted. This token is used to make sure that the one who is submitting the form is the same user who asked for the form. 
-<pre>
- &lt;form action="{{ route('home.create') }}" method="post">
+```
+ <form action="{{ route('home.create') }}" method="post">
             @csrf
-</pre>
+```
 
 This is a sample of how a 32 bit token looks like:
 **e5c7d13d8f2cffa3097f48d3db7f3d3c9a7b84faec49fbf96e1f2e78f15d13cd**
 
 We need to make sure that the data was entered correctly so we need to access the request data 
-<pre>
+```
  public function create(Request $request)
     {
         $username = $request->username;
@@ -271,17 +271,17 @@ We need to make sure that the data was entered correctly so we need to access th
 
         return redirect(route('home.account'))->with(compact('username', 'email'));
     }
-</pre>
+```
 Modify the account body
-<pre>
-  &lt;body>
-         &lt;h1 style="text-align: center">
+```
+  <body>
+         <h1 style="text-align: center">
             Congratulations you have created your account with the following information
-             &lt;p>Username: {{ session('username') }}&lt;/p>
-             &lt;p>Email: {{ session('email') }}&lt;/p>
-       &lt;/h1>
-    &lt;/body>
-</pre>
+             <p>Username: {{ session('username') }}</p>
+             <p>Email: {{ session('email') }}</p>
+       </h1>
+    </body>
+```
 
 
 ## Part 6: Database  
@@ -441,7 +441,7 @@ The main components of the model are:
 
 **Sample model
 
-<pre>
+```
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -485,7 +485,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 }
-</pre>
+```
 
 To create controller for the model with basic functions (resource functions ) run this command 
 <pre>
@@ -494,7 +494,7 @@ php artisan make:model User --controller --resource
 </pre>
 
 The results controller will be like 
-<pre>
+```
 class UserController extends Controller
 {
     public function index()
@@ -532,7 +532,7 @@ class UserController extends Controller
         // Delete the user from the database
     }
 }
-</pre>
+```
 
 ## Part 9: Customizing Error Views
 In Laravel, you can override the default error views by creating your own error views and placing them in the **resources/views/errors** directory. Laravel uses HTTP status codes to determine which error view to display, so you can create a separate view for each status code that you want to customize.
@@ -547,23 +547,23 @@ Here's how to override the default error views in Laravel:
 That's it! Laravel will now use your custom error views instead of the default ones.
 
 Sample HTML for 404 error page 
-<pre>
-&lt;!DOCTYPE html>
-&lt;html>
-  &lt;head>
-    &lt;title>Page Not Found - 404 Error&lt;/title>
-    &lt;style>
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Not Found - 404 Error</title>
+    <style>
       /* Your custom CSS styles */
-    &lt;/style>
-  &lt;/head>
-  &lt;body>
-    &lt;h1>Page Not Found - 404 Error&lt;/h1>
-    &lt;p>The page you requested could not be found on this server.&lt;/p>
-    &lt;p>Please check the URL for typos and try again.&lt;/p>
-    &lt;p>If you believe this is an error, please contact the site administrator.&lt;/p>
-  &lt;/body>
-&lt;/html>
-</pre>
+    </style>
+  </head>
+  <body>
+    <h1>Page Not Found - 404 Error</h1>
+    <p>The page you requested could not be found on this server.</p>
+    <p>Please check the URL for typos and try again.</p>
+    <p>If you believe this is an error, please contact the site administrator.</p>
+  </body>
+</html>
+```
 
 
 ## Part 10: Creating CRUD for User model
@@ -596,7 +596,7 @@ Then we need to add the following routes to the routes/web.php file to create wh
 
 
 The syntax  of these routes is :
-<pre>
+```
 // Show all users
 Route::get('/users', 'UserController@index')->name('users.index');
 
@@ -618,11 +618,11 @@ Route::put('/users/{user}', 'UserController@update')->name('users.update');
 // Delete a specific user
 Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
 
-</pre>
+```
 
 
 If you want to write less code you can use the resource method, this method will generate all the above routes for you with that same syntax above
-<pre>
+```
 Route::resource('resource', 'ResourceController');
 
 for user resource
@@ -632,13 +632,12 @@ you can generate or execlude some routes using the only and except methods
 
 Route::resource('users', 'UserController')->only(['index', 'show', 'create']);
 Route::resource('users', 'UserController')->except(['destroy']);
-
-</pre>
+```
 
 
 Now update the controller to handel these routes:
 
-<pre>
+```
 
 namespace App\Http\Controllers;
 
@@ -709,7 +708,7 @@ class UserController extends Controller
     }
 }
 
-</pre>
+```
 
 
 The followign are simple  views:
