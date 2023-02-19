@@ -619,3 +619,98 @@ Route::put('/users/{user}', 'UserController@update')->name('users.update');
 Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
 
 </pre>
+
+
+If you want to write less code you can use the resource method, this method will generate all the above routes for you with that same syntax above
+<pre>
+Route::resource('resource', 'ResourceController');
+
+for user resource
+Route::resource('users', 'UserController');
+
+you can generate or execlude some routes using the only and except methods
+
+Route::resource('users', 'UserController')->only(['index', 'show', 'create']);
+Route::resource('users', 'UserController')->except(['destroy']);
+
+</pre>
+
+
+Now update the controller to handel these routes:
+
+<pre>
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    public function store(Request $request)
+    {  // note that the attribute name in $request->attribute is 
+       //the same value givent to the input tag name attribute field
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->address = $request->address;
+        $user->phone = $request->phone;
+        $user->save();
+        return redirect()->route('users.index');
+    }
+
+    public function show($id)
+    {
+        $user = User::find($id);
+        return view('users.show', compact('user'));
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->address = $request->address;
+        $user->phone = $request->phone;
+        if (!empty($request->password)) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->save();
+        return redirect()->route('users.show', ['user' => $user->id]);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('users.index');
+    }
+}
+
+</pre>
+
+
+The followign are simple  views:
+
+
