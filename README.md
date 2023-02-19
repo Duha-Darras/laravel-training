@@ -639,7 +639,6 @@ Route::resource('users', 'UserController')->except(['destroy']);
 Now update the controller to handel these routes:
 
 <pre>
-<?php
 
 namespace App\Http\Controllers;
 
@@ -660,7 +659,8 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {  // note that the attribute name in $request->attribute is 
+    { 
+     // note that the attribute name in $request->attribute is 
        //the same value givent to the input tag name attribute field
         $user = new User();
         $user->name = $request->name;
