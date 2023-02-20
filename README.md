@@ -1,4 +1,17 @@
 # laravel-training
+## Part 0: Laravel Resources
+**Books**
+- The most recent book for Laravel 9.*: Practical Laravel Develop clean MVC web applications (Daniel Correa ,Paola Vallejo) (2022)	
+- Another good book but for older Laravel 6.*: Domain-Driven Laravel: Learn to Implement Domain-Driven Design Using Laravel (Jesse Griffin) (2021)
+
+**Websites**
+- Laravel official documentation: https://laravel.com/docs/9.x
+- Free PHP online course: https://laracasts.com/series/php-for-beginners-2023-edition
+- Free larvel 8 online course: https://laracasts.com/series/laravel-8-from-scratch
+- Blogs and online courses(free and paid): https://laracasts.com/topics/laravel
+- Blogs: https://www.freecodecamp.org/news/tag/laravel/
+- Tutorials: https://dev.to/theme_selection/the-best-laravel-tutorials-for-beginners-3nf0
+
 
 ## Part 1: Installation
 To work with Laravel w need to setup the following installation:
